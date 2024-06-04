@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -6,112 +7,120 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Icon} from '@rneui/themed';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function LoginField() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={{marginTop: 100}}>
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 20,
+          height: 50,
+          marginHorizontal: 30,
+          justifyContent: 'center',
+          paddingLeft: 20,
+        }}>
+        <TextInput
+          placeholder="Your Email"
+          placeholderTextColor={'black'}
+          style={{fontSize: 15}}
+        />
+      </View>
+
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 20,
+          height: 50,
+          marginHorizontal: 30,
+          justifyContent: 'center',
+          paddingLeft: 20,
+          marginTop: 10,
+        }}>
+        <TextInput
+          placeholder="Password"
+          placeholderTextColor={'black'}
+          style={{fontSize: 15}}
+        />
+      </View>
+      <SinginButton />
     </View>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+function SinginButton() {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+    <View style={{flexDirection: 'row', marginTop: 10}}>
+      <View style={{height: 70, flex: 1}}>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 20,
+            fontWeight: 700,
+            marginLeft: 40,
+          }}>
+          Sign In
+        </Text>
+      </View>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+          height: 70,
+          flex: 1,
+        }}>
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            height: 50,
+            width: 50,
+            backgroundColor: '#367cfe',
+            marginRight: 40,
+            borderRadius: 200,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <Icon
+            size={20}
+            color={'white'}
+            name={'arrow-forward'}
+            type="ionicon"
+          />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+    </View>
+  );
+}
+function App(): React.JSX.Element {
+  return (
+    <View style={sty.container}>
+      <Image
+        style={{width: '100%', height: '100%', position: 'absolute'}}
+        source={require('./assets/img/img.jpg')}
+      />
+      <Text
+        style={{
+          fontSize: 45,
+          color: 'white',
+          fontWeight: 700,
+          marginTop: 100,
+          marginLeft: 20,
+        }}>
+        {'Welcome \nBack'}
+      </Text>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="never">
+        <LoginField />
+      </KeyboardAwareScrollView>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+const sty = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#yellow',
   },
 });
 
