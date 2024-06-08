@@ -5,6 +5,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {
+  Alert,
   Image,
   StyleSheet,
   Text,
@@ -14,6 +15,8 @@ import {
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {TextInput} from 'react-native';
 import {Icon} from '@rneui/themed';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../../firebase/firebaseinit';
 
 
 function BottomeSection(p:any) {
@@ -70,8 +73,44 @@ function BottomeSection(p:any) {
 
 function SinginButton(p:any) {
 
+    const u_email = p.u_email;
+    const u_password = p.u_password;
+
+  function getUser() {
+   getDocs(
+    query(
+      collection(db, 'Users')
+      ,where('email','==',u_email.toLowerCase()))).then(ds=>{
+        if(ds.size == 1){
+          const dt = ds.docs[0].data();
+            if(dt.password == u_password){
+              p.sb_stack.navigate('HomPage');
+            }else{
+              Alert.alert('Message', 'incorrect email or password');
+              console.log('incorrect email or password');
+              
+            }
+        }else{
+          Alert.alert('Message', "can't find this user");
+          console.log("can't find this user");
+          
+        }
+      })
+  }
+
 function gotoHomPage() {
-  p.sb_stack.navigate('HomPage');
+
+  getUser();
+// if(u_email.toLowerCase()==email && u_password==password){
+//   console.log('correct email and password');
+//   p.sb_stack.navigate('HomPage');
+  
+// }else{
+//   Alert.alert('Message', 'incorrect email or password');
+//   console.log('incorrect email or password');
+// }
+
+  
 }
 
   return (
@@ -121,6 +160,10 @@ function gotoHomPage() {
 function LoginField(p:any) {
 
   const stack = p.lf_stack;
+
+const [userEmail, setUserEmail] = React.useState('');
+const [userPassword, setUserPassword] = React.useState('');
+
   return (
     <View style={{marginTop: 100}}>
       <View
@@ -135,6 +178,7 @@ function LoginField(p:any) {
         <TextInput
           placeholder="Your Email"
           placeholderTextColor={'black'}
+          onChangeText={(v) => setUserEmail(v)}
           style={{fontSize: 15}}
         />
       </View>
@@ -153,10 +197,12 @@ function LoginField(p:any) {
         <TextInput
           placeholder="Password"
           placeholderTextColor={'black'}
+          secureTextEntry={true}
+          onChangeText={(v) => setUserPassword(v)}
           style={{fontSize: 15}}
         />
       </View>
-      <SinginButton sb_stack={stack} />
+      <SinginButton u_email = {userEmail} u_password = {userPassword}  sb_stack={stack} />
       <BottomeSection bs_stack={stack}/>
     </View>
   );
