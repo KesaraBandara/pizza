@@ -11,7 +11,9 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseinit';
 import { useNavigation } from '@react-navigation/native';
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const isPasswordValid = (password: string | any[]) => password.length >= 6;
 
 function SignupSection() {
 
@@ -23,7 +25,25 @@ function SignupSection() {
 
   const nav:any = useNavigation()
 
+  function validateInputs() {
+    if (name.trim() === '') {
+      Alert.alert("Name is required");
+      return false;
+    }
+    if (!emailRegex.test(email?.trim() || '')) {
+      Alert.alert("Invalid email format");
+      return false;
+    }
+    if (!isPasswordValid(password)) {
+      Alert.alert("Password must be at least 6 characters long");
+      return false;
+    }
+    return true;
+  }
+
   function saveUser(){
+
+    if (!validateInputs()) return;
 
     setSaving(true);
     addDoc(collection(db,'Users'),{
